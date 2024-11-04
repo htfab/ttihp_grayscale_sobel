@@ -1,13 +1,13 @@
+module sobel_core (
+    input sobel_matrix matrix_pixels_i,
+    output [PIXEL_WIDTH_OUT-1:0] out_sobel_core_o                           
+);
+
 `ifdef COCOTB_SIM
   `include "../src/parameters.svh"
 `else
   `include "parameters.svh"
 `endif
-
-module sobel_core (
-    input sobel_matrix matrix_pixels_i,
-    output [PIXEL_WIDTH_OUT-1:0] out_sobel_core_o                           
-);
 
 logic signed [MAX_GRADIENT_WIDTH:0] x_grad;      //No substraction of 1 because gradient is signed, so size is MAX_GRADIENT_WIDTH + 1
 logic signed [MAX_GRADIENT_WIDTH:0] y_grad;                                    
