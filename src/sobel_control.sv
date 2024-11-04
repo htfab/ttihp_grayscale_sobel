@@ -1,9 +1,3 @@
-`ifdef COCOTB_SIM
-  `include "../src/parameters.svh"
-`else
-  `include "parameters.svh"
-`endif
-
 module sobel_control (
         input logic    clk_i,
         input logic    nreset_i,
@@ -16,52 +10,17 @@ module sobel_control (
         output logic   px_rdy_o
     );
 
+    `ifdef COCOTB_SIM
+        `include "../src/parameters.svh"
+    `else
+        `include "parameters.svh"
+    `endif
+
     logic [SOBEL_COUNTER_MAX_BITS:0] counter_sobel;
     logic [MAX_RESOLUTION_BITS-1:0] counter_pixels;
     logic px_ready;
-
-    typedef struct packed {
-        logic signed [PIXEL_WIDTH_OUT-1:0] pix0;
-        logic signed [PIXEL_WIDTH_OUT-1:0] pix1;
-        logic signed [PIXEL_WIDTH_OUT-1:0] pix2;
-    } sobel_vector;
-    
-
-    typedef struct packed {
-        sobel_vector vector0;
-        sobel_vector vector1;
-        sobel_vector vector2;
-    } sobel_matrix;
     
     sobel_matrix sobel_pixels; 
-
-    logic [PIXEL_WIDTH_OUT-1:0] sobel_pixels_vector0_pix0;
-    assign sobel_pixels_vector0_pix0 = sobel_pixels.vector0.pix0;    
-
-    logic [PIXEL_WIDTH_OUT-1:0] sobel_pixels_vector0_pix1;
-    assign sobel_pixels_vector0_pix1 = sobel_pixels.vector0.pix1;    
-
-    logic [PIXEL_WIDTH_OUT-1:0] sobel_pixels_vector0_pix2;
-    assign sobel_pixels_vector0_pix2 = sobel_pixels.vector0.pix2;    
-
-    logic [PIXEL_WIDTH_OUT-1:0] sobel_pixels_vector1_pix0;
-    assign sobel_pixels_vector1_pix0 = sobel_pixels.vector1.pix0;    
-
-    logic [PIXEL_WIDTH_OUT-1:0] sobel_pixels_vector1_pix1;
-    assign sobel_pixels_vector1_pix1 = sobel_pixels.vector1.pix1;    
-
-    logic [PIXEL_WIDTH_OUT-1:0] sobel_pixels_vector1_pix2;  
-    assign sobel_pixels_vector1_pix2 = sobel_pixels.vector1.pix2;    
-
-    logic [PIXEL_WIDTH_OUT-1:0] sobel_pixels_vector2_pix0;
-    assign sobel_pixels_vector2_pix0 = sobel_pixels.vector2.pix0;    
-
-    logic [PIXEL_WIDTH_OUT-1:0] sobel_pixels_vector2_pix1;
-    assign sobel_pixels_vector2_pix1 = sobel_pixels.vector2.pix1;    
-
-    logic [PIXEL_WIDTH_OUT-1:0] sobel_pixels_vector2_pix2;
-    assign sobel_pixels_vector2_pix2 = sobel_pixels.vector2.pix2;    
-
 
     logic [PIXEL_WIDTH_OUT-1:0] out_sobel_core;
     logic [PIXEL_WIDTH_OUT-1:0] out_sobel;
