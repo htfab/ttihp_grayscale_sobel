@@ -12,25 +12,24 @@ project:
 
   # Your top module name must start with "tt_um_". Make it unique by including your github username:
   top_module:  "tt_um_gray_sobel"
-  
+
   # List your project's source files here. Source files must be in ./src and you must list each source file separately, one per line:
-  source_files:     
-    - "tt_um_gray_sobel.sv"   
-    - "top_gray_sobel.sv"
-    - "parameters.svh"
-    - "sobel_control.sv"
-    - "sobel_core.sv"
-    - "gray_scale_core.sv"
-    - "spi_core.sv"
-    - "spi_control.sv"
-    - "async_nreset_synchronizers.sv"
-    - 'LFSR.sv'
-    
+  source_files:
+    - "tt_um_gray_sobel.v"
+    - "top_gray_sobel.v"
+    - "sobel_control.v"
+    - "sobel_core.v"
+    - "gray_scale_core.v"
+    - "spi_core.v"
+    - "spi_control.v"
+    - "async_nreset_synchronizers.v"
+    - 'LFSR.v'
+
 # The pinout of your project. Leave unused pins blank. DO NOT delete or add any pins.
 pinout:
   # Inputs
   ui[0]: "spi_sck_i"
-  ui[1]: "spi_cs_i" 
+  ui[1]: "spi_cs_i"
   ui[2]: "spi_sdi_i"
   ui[3]: "select_process_i[0]"
   ui[4]: "select_process_i[1]"

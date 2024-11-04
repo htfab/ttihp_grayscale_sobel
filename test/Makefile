@@ -10,16 +10,15 @@ COCOTB_SIM = 1
 
 PWD=$(shell pwd)
 ifeq ($(BEHAV), 1)
-	VERILOG_SOURCES += $(PWD)/../src/parameters.svh
-	VERILOG_SOURCES += $(PWD)/../src/tt_um_gray_sobel.sv
-	VERILOG_SOURCES += $(PWD)/../src/top_gray_sobel.sv
-	VERILOG_SOURCES += $(PWD)/../src/sobel_control.sv
-	VERILOG_SOURCES += $(PWD)/../src/sobel_core.sv
-	VERILOG_SOURCES += $(PWD)/../src/gray_scale_core.sv
-	VERILOG_SOURCES += $(PWD)/../src/async_nreset_synchronizers.sv
-	VERILOG_SOURCES += $(PWD)/../src/spi_core.sv
-	VERILOG_SOURCES += $(PWD)/../src/spi_control.sv
-	VERILOG_SOURCES += $(PWD)/../src/LFSR.sv
+	VERILOG_SOURCES += $(PWD)/../src/tt_um_gray_sobel.v
+	VERILOG_SOURCES += $(PWD)/../src/top_gray_sobel.v
+	VERILOG_SOURCES += $(PWD)/../src/sobel_control.v
+	VERILOG_SOURCES += $(PWD)/../src/sobel_core.v
+	VERILOG_SOURCES += $(PWD)/../src/gray_scale_core.v
+	VERILOG_SOURCES += $(PWD)/../src/async_nreset_synchronizers.v
+	VERILOG_SOURCES += $(PWD)/../src/spi_core.v
+	VERILOG_SOURCES += $(PWD)/../src/spi_control.v
+	VERILOG_SOURCES += $(PWD)/../src/LFSR.v
 else
 	VERILOG_SOURCES += $(PWD)/../src/apr/tt_um_gray_sobel.v
 	VERILOG_SOURCES += $(PWD)/../src/pdk_verilog/primitives.v
