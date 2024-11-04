@@ -45,4 +45,4 @@ There is also a functionality for the input to the different processing options 
 
 ## External hardware
 
-Any device that allows sending data via an SPI protocol, like a Raspberry Pi.
+Any device that allows sending and receiving data via an SPI protocol, like a Raspberry Pi.
