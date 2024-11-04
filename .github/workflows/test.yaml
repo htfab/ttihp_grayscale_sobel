@@ -2,7 +2,7 @@ name: test
 on: [push, workflow_dispatch]
 jobs:
   test:
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-latest
     steps:
       - name: Checkout repo
         uses: actions/checkout@v4
@@ -43,5 +43,5 @@ jobs:
         with:
           name: test-vcd
           path: |
-            test/tb.vcd
+            test/tt_um_gray_sobel.fst
             test/results.xml
