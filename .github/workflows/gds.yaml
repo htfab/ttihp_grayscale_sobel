@@ -61,7 +61,7 @@ jobs:
 
       - name: Validate RTL Code
         run: |
-          yosys -p "synth -top src/tt_um_gray_sobel.sv; show -format verilog synthesized_output.sv" || exit 1
+          yosys -p "synth -top tt_um_gray_sobel -top src/tt_um_gray_sobel.sv; write_verilog ${{ env.TEST_DIR }}/synthesized_output.v"  || exit 1
 
       - name: Run tests
         shell: bash
