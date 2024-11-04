@@ -58,6 +58,11 @@ jobs:
           sudo apt-get update
           sudo apt-get install -y yosys
 
+      - name: Debug - List files in TEST_DIR
+        run: |
+          echo "Listing files in the TEST_DIR directory:"
+          ls -la ${{ env.TEST_DIR }}
+
       - name: Run tests
         shell: bash
         run: |
