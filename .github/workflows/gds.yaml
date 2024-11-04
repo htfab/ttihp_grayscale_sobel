@@ -59,7 +59,7 @@ jobs:
           sudo apt-get install -y build-essential git
           git clone --recursive https://github.com/YosysHQ/yosys.git
           cd yosys
-          git checkout 0.34  # Cambia a la versión que desees
+          git checkout master  
           make
           sudo make install
 
