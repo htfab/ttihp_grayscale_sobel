@@ -65,12 +65,20 @@ jobs:
           sudo apt-get update -y
           sudo apt-get install -y iverilog
 
+     - name: Install Yosys
+       shell: bash
+       run: |
+          sudo apt-get update
+          sudo apt-get install -y yosys
+
      - name: Run tests
        shell: bash
        run: |
          cp tt_submission/*.v "$TEST_DIR/gate_level_netlist.v"
          cd "$TEST_DIR"
-         rm -f tb.vcd results.xml
+         rm -f tb.vcd results.xmlwget https://github.com/htfab/iverilog/releases/download/13.0-git-d8c3c51/iverilog_13.0-git-d8c3c51a-1_amd64.deb
+          sudo apt-get update -y
+          sudo apt-get install -y ./iverilog_13.0-git-d8c3c51a-1_amd64.deb
          make clean
          GATES=yes make
  
