@@ -78,7 +78,9 @@ module sobel_control (
             counter_sobel <= 'b0;
             counter_pixels <= 'b0;
             px_ready <= 'b0;
-            sobel_pixels <= 'b0;
+            sobel_pixels.vector0 <= '0;  
+            sobel_pixels.vector1 <= '0;
+            sobel_pixels.vector2 <= '0;
         end else begin
             case (next)
                 IDLE: begin
