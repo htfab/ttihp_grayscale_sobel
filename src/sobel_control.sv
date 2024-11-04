@@ -19,6 +19,19 @@ module sobel_control (
     logic [SOBEL_COUNTER_MAX_BITS:0] counter_sobel;
     logic [MAX_RESOLUTION_BITS-1:0] counter_pixels;
     logic px_ready;
+
+    typedef struct packed {
+        logic signed [PIXEL_WIDTH_OUT-1:0] pix0;
+        logic signed [PIXEL_WIDTH_OUT-1:0] pix1;
+        logic signed [PIXEL_WIDTH_OUT-1:0] pix2;
+    } sobel_vector;
+    
+
+    typedef struct packed {
+        sobel_vector vector0;
+        sobel_vector vector1;
+        sobel_vector vector2;
+    } sobel_matrix;
     
     sobel_matrix sobel_pixels; 
 
@@ -33,14 +46,24 @@ module sobel_control (
 
     state_t fsm_state, next;
 
+    // Unpacking the pixels with logic labels
+    logic [PIXEL_WIDTH_OUT-1:0] sobel_pixels_vector0_pix0;
+    logic [PIXEL_WIDTH_OUT-1:0] sobel_pixels_vector0_pix1;
+    logic [PIXEL_WIDTH_OUT-1:0] sobel_pixels_vector0_pix2;
+    logic [PIXEL_WIDTH_OUT-1:0] sobel_pixels_vector1_pix0;
+    logic [PIXEL_WIDTH_OUT-1:0] sobel_pixels_vector1_pix1;
+    logic [PIXEL_WIDTH_OUT-1:0] sobel_pixels_vector1_pix2;
+    logic [PIXEL_WIDTH_OUT-1:0] sobel_pixels_vector2_pix0;
+    logic [PIXEL_WIDTH_OUT-1:0] sobel_pixels_vector2_pix1;
+    logic [PIXEL_WIDTH_OUT-1:0] sobel_pixels_vector2_pix2;
+
     sobel_core sobel(
         .matrix_pixels_i(sobel_pixels),
         .out_sobel_core_o(out_sobel_core)
     );
 
-
-    always_ff @(posedge clk_i or negedge nreset_i)begin
-        if(!nreset_i)begin
+    always_ff @(posedge clk_i or negedge nreset_i) begin
+        if(!nreset_i) begin
             fsm_state <= IDLE;
         end else begin
             fsm_state <= next;
@@ -57,7 +80,7 @@ module sobel_control (
                 if (counter_pixels == 1) next = NEXT_MATRIX; 
                 else next = FIRST_MATRIX;
             end
-            NEXT_MATRIX:begin
+            NEXT_MATRIX: begin
                 if (start_sobel_i == 0) next = FIRST_MATRIX; 
                 else next = NEXT_MATRIX;
             end
@@ -65,8 +88,8 @@ module sobel_control (
         endcase
     end
 
-    always_ff @(posedge clk_i or negedge nreset_i)begin
-        if (!nreset_i)begin
+    always_ff @(posedge clk_i or negedge nreset_i) begin
+        if (!nreset_i) begin
             counter_sobel <= 'b0;
             counter_pixels <= 'b0;
             px_ready <= 'b0;
@@ -82,15 +105,15 @@ module sobel_control (
                     px_ready <= 'b0;
                     if (px_rdy_i) begin
                         case(counter_sobel)
-                            0: sobel_pixels.vector0.pix0 <= in_px_sobel_i;
-                            1: sobel_pixels.vector0.pix1 <= in_px_sobel_i;
-                            2: sobel_pixels.vector0.pix2 <= in_px_sobel_i;
-                            3: sobel_pixels.vector1.pix0 <= in_px_sobel_i;
-                            4: sobel_pixels.vector1.pix1 <= in_px_sobel_i;
-                            5: sobel_pixels.vector1.pix2 <= in_px_sobel_i;
-                            6: sobel_pixels.vector2.pix0 <= in_px_sobel_i;
-                            7: sobel_pixels.vector2.pix1 <= in_px_sobel_i;
-                            8: sobel_pixels.vector2.pix2 <= in_px_sobel_i;
+                            0: sobel_pixels_vector0_pix0 <= in_px_sobel_i;
+                            1: sobel_pixels_vector0_pix1 <= in_px_sobel_i;
+                            2: sobel_pixels_vector0_pix2 <= in_px_sobel_i;
+                            3: sobel_pixels_vector1_pix0 <= in_px_sobel_i;
+                            4: sobel_pixels_vector1_pix1 <= in_px_sobel_i;
+                            5: sobel_pixels_vector1_pix2 <= in_px_sobel_i;
+                            6: sobel_pixels_vector2_pix0 <= in_px_sobel_i;
+                            7: sobel_pixels_vector2_pix1 <= in_px_sobel_i;
+                            8: sobel_pixels_vector2_pix2 <= in_px_sobel_i;
                         endcase
                         counter_sobel <= counter_sobel + 1;
                         if (counter_sobel == 8) begin
@@ -105,15 +128,16 @@ module sobel_control (
                     if (px_rdy_i) begin
                         case(counter_sobel)
                             0: begin 
-                                sobel_pixels.vector0 <= sobel_pixels.vector1;
-                                sobel_pixels.vector1 <= sobel_pixels.vector2;
-                                sobel_pixels.vector2.pix0 <= in_px_sobel_i;
+                                // Actualizar las etiquetas en lugar de sobel_pixels
+                                sobel_pixels_vector0_pix0 <= sobel_pixels_vector1_pix0;
+                                sobel_pixels_vector1_pix0 <= sobel_pixels_vector2_pix0;
+                                sobel_pixels_vector2_pix0 <= in_px_sobel_i;
                             end
                             1: begin
-                                sobel_pixels.vector2.pix1 <= in_px_sobel_i;
+                                sobel_pixels_vector2_pix1 <= in_px_sobel_i;
                             end
                             2: begin
-                                sobel_pixels.vector2.pix2 <= in_px_sobel_i;
+                                sobel_pixels_vector2_pix2 <= in_px_sobel_i;
                             end
                         endcase
                         counter_sobel <= counter_sobel + 1;
@@ -133,8 +157,8 @@ module sobel_control (
         end
     end
 
-    always_ff @(posedge clk_i or negedge nreset_i)begin
-        if (!nreset_i)begin
+    always_ff @(posedge clk_i or negedge nreset_i) begin
+        if (!nreset_i) begin
             out_sobel <= '0;
             px_rdy_o <= '0;
         end else begin
@@ -145,6 +169,7 @@ module sobel_control (
             end
         end
     end
-    assign  out_px_sobel_o = out_sobel;
+
+    assign out_px_sobel_o = out_sobel;
 
 endmodule
