@@ -1,6 +1,14 @@
 module sobel_core (
-    input sobel_matrix matrix_pixels_i,
-    output [PIXEL_WIDTH_OUT-1:0] out_sobel_core_o                           
+  input signed [PIXEL_WIDTH_OUT-1:0] pix0_0,
+  input signed [PIXEL_WIDTH_OUT-1:0] pix0_1,
+  input signed [PIXEL_WIDTH_OUT-1:0] pix0_2,
+  input signed [PIXEL_WIDTH_OUT-1:0] pix1_0,
+  input signed [PIXEL_WIDTH_OUT-1:0] pix1_1,
+  input signed [PIXEL_WIDTH_OUT-1:0] pix1_2,
+  input signed [PIXEL_WIDTH_OUT-1:0] pix2_0,
+  input signed [PIXEL_WIDTH_OUT-1:0] pix2_1,
+  input signed [PIXEL_WIDTH_OUT-1:0] pix2_2,
+  output [PIXEL_WIDTH_OUT-1:0] out_sobel_core_o
 );
 
 `ifdef COCOTB_SIM
@@ -17,13 +25,13 @@ logic [MAX_GRADIENT_SUM_WIDTH:0] sum_xy_grad;
 
 
 //Equivalent to convolve 3x3 pixel matrix with sobel 3x3 X kernel
-assign x_grad = (( matrix_pixels_i.vector0.pix2 -  matrix_pixels_i.vector0.pix0) + 
-                (( matrix_pixels_i.vector1.pix2 -  matrix_pixels_i.vector1.pix0) << 1) + 
-                ( matrix_pixels_i.vector2.pix2 -  matrix_pixels_i.vector2.pix0));
+assign x_grad = ((pix0_2 - pix0_0) + 
+                ((pix1_2 - pix1_0) << 1) + 
+                (pix2_2 - pix2_0));
 //Equivalent to convolve 3x3 pixel matrix with sobel 3x3 Y kernel    
-assign y_grad = (( matrix_pixels_i.vector2.pix0 -  matrix_pixels_i.vector0.pix0) + 
-                (( matrix_pixels_i.vector2.pix1 -  matrix_pixels_i.vector0.pix1) << 1) + 
-                ( matrix_pixels_i.vector2.pix2 -  matrix_pixels_i.vector0.pix2));  
+                assign y_grad = ((pix2_0 - pix0_0) + 
+                ((pix2_1 - pix0_1) << 1) + 
+                (pix2_2 - pix0_2)); 
 
 //Equivalent aprox to calculate magnitud of x,y gradient
 assign abs_x_grad = (x_grad[MAX_GRADIENT_WIDTH]? ~x_grad+1 : x_grad);  //Absolute value    

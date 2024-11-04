@@ -34,7 +34,15 @@ module sobel_control (
     state_t fsm_state, next;
 
     sobel_core sobel(
-        .matrix_pixels_i(sobel_pixels),
+        .pix0_0(sobel_pixels.vector0.pix0),
+        .pix0_1(sobel_pixels.vector0.pix1),
+        .pix0_2(sobel_pixels.vector0.pix2),
+        .pix1_0(sobel_pixels.vector1.pix0),
+        .pix1_1(sobel_pixels.vector1.pix1),
+        .pix1_2(sobel_pixels.vector1.pix2),
+        .pix2_0(sobel_pixels.vector2.pix0),
+        .pix2_1(sobel_pixels.vector2.pix1),
+        .pix2_2(sobel_pixels.vector2.pix2),
         .out_sobel_core_o(out_sobel_core)
     );
 
