@@ -1,5 +1,5 @@
-`ifndef __CONSTANTS_SOBEL__
-`define __CONSTANTS_SOBEL__
+`ifndef __SOBEL_DEFINITIONS_SVH__
+`define __SOBEL_DEFINITIONS_SVH__
 
 localparam MAX_PIXEL_BITS = 24;              
 localparam PIXEL_WIDTH_OUT = 8;
@@ -23,4 +23,5 @@ localparam ZERO_PAD_WIDTH = MAX_PIXEL_BITS - PIXEL_WIDTH_OUT;
         sobel_vector vector2;
     } sobel_matrix;
 
-`endif
+`endif // __SOBEL_DEFINITIONS_SVH__
+
