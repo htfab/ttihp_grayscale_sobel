@@ -25,9 +25,6 @@ module tt_um_gray_sobel (
 );
 
     assign uo_out[7:3] = output_px[4:0];
-    assign uo_out[7:5] = output_px[2:0];
-    assign uo_out[4:3] = select_process_i;
-
     assign uio_out = 0;
     assign uio_oe  = 0;
 
